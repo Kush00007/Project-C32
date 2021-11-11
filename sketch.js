@@ -7,11 +7,9 @@ var engine, world;
 var backgroundImg;
 var hour;
 
-var bg = "sunrise.png";
 
 function preload() {
-    getBackgroundImg();
-    
+    bg=loadImage("sunrise.png")
 }
 
 function setup(){
@@ -19,41 +17,42 @@ function setup(){
     engine = Engine.create();
     world = engine.world;
 
+    getBackgroundImg();
+
 }
 
 function draw(){
-    if(backgroundImg)
-        background(backgroundImg);
+    background(bg)
 
     Engine.update(engine);
-
-
-    fill("black");
+     fill("black");
     textSize(30);
-    
+
     if(hour>=12){
         text("Time : "+ hour%12 + " PM", 50,100);
-    }else if(hour==0){
-        text("Time : 12 AM",100,100);
-    }else{
+       }else if(hour==0){
+         text("Time : 12 AM",100,100);
+       }else{
         text("Time : "+ hour%12 + " AM", 50,100);
-    }
+       }
 
 }
 
 async function getBackgroundImg(){
 
-var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata")
-var responseJSON = await response.json()
-var datetime = responseJSON.datetime
-hour = datetime.slice(11,13)
+    var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata");
+
+    var responseJSON = await response.json();
+    var datetime = responseJSON.datetime;
     
-    if(hour>=0 && hour<18 ){
-        bg = "sunrise.png";
+        hour = datetime.slice(11,13);
+
+    if(hour>=0 && hour<18 )
+    {
+        bg=loadImage("sunrise.png")
     }
-    else{
-        bg= "sunset.png"
+    else
+    {
+        bg=loadImage("sunset.png")
     }
-    
-    backgroundImg = loadImage(bg);
 }
